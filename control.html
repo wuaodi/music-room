@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Player</title>
+</head>
+<body>
+    <h1>Music Player</h1>
+    <form>
+        <label for="name">Music File Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <button type="button" onclick="playMusic()">Play</button>
+    </form>
+    <br>
+    <button onclick="stopMusic()">Stop</button>
+    <button onclick="pauseMusic()">Pause</button>
+    <button onclick="resumeMusic()">Resume</button>
+
+    <script>
+        const ips = ['http://127.0.0.1:5000',
+        'http://10.2.29.82:5000', ];
+
+        function playMusic() {
+            const name = document.getElementById('name').value;
+            ips.forEach(ip => {
+                fetch(`${ip}/play`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `name=${name}`
+                })
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.log(error))
+            });
+        }
+
+        function stopMusic() {
+            ips.forEach(ip => {
+                fetch(`${ip}/stop`)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.log(error))
+            });
+        }
+
+        function pauseMusic() {
+            ips.forEach(ip => {
+                fetch(`${ip}/pause`)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.log(error))
+            });
+        }
+
+        function resumeMusic() {
+            ips.forEach(ip => {
+                fetch(`${ip}/unpause`)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.log(error))
+            });
+        }
+    </script>
+</body>
+</html>
